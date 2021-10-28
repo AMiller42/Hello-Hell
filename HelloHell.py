@@ -111,9 +111,10 @@ class Interpreter:
             cmd = self._code[self._code_index]
         except IndexError:
             for cell in self._tape:
-                if online:
-                    out[1] += chr(self._tape[cell][0])
-                print(chr(self._tape[cell][0]), end="")
+                if self._tape[cell][0]:
+                    if online:
+                        out[1] += chr(self._tape[cell][0])
+                    print(chr(self._tape[cell][0]), end="")
 
         try:
             self.handle_instruction(cmd)
