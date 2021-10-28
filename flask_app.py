@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from flask_cors import CORS
 import multiprocessing, secrets
-import hellohell
+import HelloHell
 import git
 app = Flask(__name__)
 CORS(app)
@@ -47,7 +47,7 @@ def execute():
 
             ret[1] = ""
             ret[2] = ""
-            sessions[session] = multiprocessing.Process(target=hellohell.execute, args=(code, input_list, ret))
+            sessions[session] = multiprocessing.Process(target=HelloHell.execute, args=(code, input_list, ret))
             sessions[session].start()
             sessions[session].join(time)
 

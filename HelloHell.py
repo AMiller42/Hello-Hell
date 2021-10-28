@@ -111,14 +111,16 @@ class Interpreter:
             cmd = self._code[self._code_index]
         except IndexError:
             for cell in self._tape:
+                if online:
+                    out[1] += chr(self._tape[cell][0])
                 print(chr(self._tape[cell][0]), end="")
-                pass
-            halt_and_catch_fire("\n")
 
         try:
             self.handle_instruction(cmd)
         except KeyboardInterrupt:
             raise KeyboardInterrupt
+        except:
+            raise StopExecution()
 
         self._code_index += 1
         changed = False
@@ -200,7 +202,9 @@ class Interpreter:
             try:
                 cmd = self._code[self._code_index + 1]
             except IndexError:
-                halt_and_catch_fire("Error: Mismatched brackets\n")
+                if online:
+                    raise StopExecution()
+                exit("\n")
 
             if cmd == start:
                 depth += 1
@@ -213,15 +217,6 @@ class Interpreter:
 
 class StopExecution(Exception):
     pass
-
-
-def halt_and_catch_fire(msg):
-    # pretty self-explanatory
-    if online:
-        if msg != "\n":
-            out[2] += msg
-    else:
-        exit(msg)
 
 
 def execute(code, input_list, output_var):
